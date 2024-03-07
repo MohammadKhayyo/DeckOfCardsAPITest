@@ -1,6 +1,7 @@
 # logic.py
 import requests
 from api_testing.infra import config_reader
+from api_testing.infra.api_wrapper import APIWrapper
 
 
 class DeckAPI:
@@ -8,6 +9,7 @@ class DeckAPI:
 
     def __init__(self):
         self.url = config_reader.get_config_data()['url']
+        self.API_wrapper = APIWrapper()
 
     def get_url(self, endpoint=""):
         """Constructs the API URL for a given endpoint."""
@@ -27,7 +29,7 @@ class DeckAPI:
             'deck_count': deck_count
         }
         endpoint = "new/shuffle/" if shuffle else "new/"
-        response = requests.get(self.get_url(endpoint), params=params)
+        response = self.API_wrapper.api_get_request(self.get_url(endpoint), params=params)
         return response.json()
 
     def shuffle_deck(self, deck_id):
@@ -37,7 +39,7 @@ class DeckAPI:
         :param deck_id: The ID of the deck to shuffle.
         :return: The API response as JSON.
         """
-        response = requests.get(self.get_url(f"{deck_id}/shuffle/"))
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/shuffle/"))
         return response.json()
 
     def draw_cards(self, deck_id, count=2):
@@ -48,7 +50,8 @@ class DeckAPI:
         :param count: The number of cards to draw.
         :return: The API response as JSON.
         """
-        response = requests.get(self.get_url(f"{deck_id}/draw/"), params={'count': count})
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/draw/"), params={'count': count})
+
         return response.json()
 
     def add_cards_to_pile(self, deck_id, pile_name, cards):
@@ -61,7 +64,8 @@ class DeckAPI:
         :return: The API response as JSON.
         """
         params = {'cards': ','.join(cards)}
-        response = requests.get(self.get_url(f"{deck_id}/pile/{pile_name}/add/"), params=params)
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/pile/{pile_name}/add/"), params=params)
+
         return response.json()
 
     def shuffle_pile(self, deck_id, pile_name):
@@ -72,7 +76,8 @@ class DeckAPI:
         :param pile_name: The name of the pile to shuffle.
         :return: The API response as JSON.
         """
-        response = requests.get(self.get_url(f"{deck_id}/pile/{pile_name}/shuffle/"))
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/pile/{pile_name}/shuffle/"))
+
         return response.json()
 
     def list_cards_in_pile(self, deck_id, pile_name):
@@ -83,7 +88,8 @@ class DeckAPI:
         :param pile_name: The name of the pile.
         :return: The API response as JSON.
         """
-        response = requests.get(self.get_url(f"{deck_id}/pile/{pile_name}/list/"))
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/pile/{pile_name}/list/"))
+
         return response.json()
 
     def draw_from_pile(self, deck_id, pile_name, count):
@@ -95,5 +101,7 @@ class DeckAPI:
         :param count: The number of cards to draw from the pile.
         :return: The API response as JSON.
         """
-        response = requests.get(self.get_url(f"{deck_id}/pile/{pile_name}/draw/"), params={'count': count})
+        response = self.API_wrapper.api_get_request(self.get_url(f"{deck_id}/pile/{pile_name}/draw/"),
+                                                    params={'count': count})
+
         return response.json()
