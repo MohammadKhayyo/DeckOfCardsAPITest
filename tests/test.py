@@ -36,7 +36,6 @@ class DeckAPITestCase(unittest.TestCase):
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
         card_codes = self.api.return_string_card(draw_response['cards'])
-        # pile_name = "test_pile"
         add_response = self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
         self.assertTrue(add_response['success'])
 
@@ -48,7 +47,6 @@ class DeckAPITestCase(unittest.TestCase):
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=3)
         card_codes = self.api.return_string_card(draw_response['cards'])
-        # pile_name = "test_pile"
         self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
 
         list_response = self.api.list_cards_in_pile(deck['deck_id'], self.pile_name)
@@ -60,7 +58,6 @@ class DeckAPITestCase(unittest.TestCase):
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
         card_codes = self.api.return_string_card(draw_response['cards'])
-        # pile_name = "test_pile"
         self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
 
         draw_pile_response = self.api.draw_from_pile(deck['deck_id'], self.pile_name, count=2)
