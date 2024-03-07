@@ -34,7 +34,7 @@ class DeckAPITestCase(unittest.TestCase):
         """Test adding cards to a pile and then shuffling that pile."""
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
-        card_codes = [card['code'] for card in draw_response['cards']]
+        card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
         add_response = self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
         self.assertTrue(add_response['success'])
@@ -46,7 +46,7 @@ class DeckAPITestCase(unittest.TestCase):
         """Test listing cards in a specific pile."""
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=3)
-        card_codes = [card['code'] for card in draw_response['cards']]
+        card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
         self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
 
@@ -58,7 +58,7 @@ class DeckAPITestCase(unittest.TestCase):
         """Test drawing cards from a specific pile."""
         deck = self.api.new_deck(shuffle=True)
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
-        card_codes = [card['code'] for card in draw_response['cards']]
+        card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
         self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
 

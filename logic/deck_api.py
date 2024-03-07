@@ -105,3 +105,6 @@ class DeckAPI:
                                                     params={'count': count})
 
         return response.json()
+
+    def return_string_card(self, cards):
+        return [card['code'] for card in cards]
