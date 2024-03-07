@@ -8,6 +8,7 @@ class DeckAPITestCase(unittest.TestCase):
     def setUp(self):
         """Create an instance of the DeckAPI to use in tests."""
         self.api = DeckAPI()
+        self.pile_name = "test_pile"
 
     def test_new_deck(self):
         """Test creating a new deck."""
@@ -36,7 +37,7 @@ class DeckAPITestCase(unittest.TestCase):
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
         card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
-        add_response = self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
+        add_response = self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
         self.assertTrue(add_response['success'])
 
         shuffle_response = self.api.shuffle_pile(deck['deck_id'], pile_name)
@@ -48,11 +49,11 @@ class DeckAPITestCase(unittest.TestCase):
         draw_response = self.api.draw_cards(deck['deck_id'], count=3)
         card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
-        self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
+        self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
 
-        list_response = self.api.list_cards_in_pile(deck['deck_id'], pile_name)
+        list_response = self.api.list_cards_in_pile(deck['deck_id'], self.pile_name)
         self.assertTrue(list_response['success'])
-        self.assertEqual(list_response['piles'][pile_name]['remaining'], 3)
+        self.assertEqual(list_response['piles'][self.pile_name]['remaining'], 3)
 
     def test_draw_from_pile(self):
         """Test drawing cards from a specific pile."""
@@ -60,12 +61,12 @@ class DeckAPITestCase(unittest.TestCase):
         draw_response = self.api.draw_cards(deck['deck_id'], count=5)
         card_codes = self.api.return_string_card(draw_response['cards'])
         pile_name = "test_pile"
-        self.api.add_cards_to_pile(deck['deck_id'], pile_name, card_codes)
+        self.api.add_cards_to_pile(deck['deck_id'], self.pile_name, card_codes)
 
-        draw_pile_response = self.api.draw_from_pile(deck['deck_id'], pile_name, count=2)
+        draw_pile_response = self.api.draw_from_pile(deck['deck_id'], self.pile_name, count=2)
         self.assertTrue(draw_pile_response['success'])
         self.assertEqual(len(draw_pile_response['cards']), 2)
-        self.assertEqual(draw_pile_response['piles'][pile_name]['remaining'], 3)  # 5 added, 2 drawn
+        self.assertEqual(draw_pile_response['piles'][self.pile_name]['remaining'], 3)  # 5 added, 2 drawn
 
 
 if __name__ == '__main__':

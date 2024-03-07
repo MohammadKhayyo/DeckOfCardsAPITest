@@ -12,7 +12,10 @@ class APIWrapper:
             self.response = self.my_request.get(url, params=params)
         else:
             self.response = self.my_request.get(url)
-        return self.response
+        if self.response.ok:
+            return self.response
+        else:
+            return self.response.status_code
 
     def api_post_request(self, url):
         self.response = self.my_request.get(url)
