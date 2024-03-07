@@ -1,7 +1,7 @@
 # logic.py
 import requests
-from api_testing.infra import config_reader
-from api_testing.infra.api_wrapper import APIWrapper
+from infra import config_reader
+from infra.api_wrapper import APIWrapper
 
 
 class DeckAPI:
